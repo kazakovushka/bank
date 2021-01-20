@@ -5,10 +5,12 @@ import lombok.Data;
 @Data
 public class Account {
     int id;
+    String name;
     int balance;
 
-    public Account(int id){
+    public Account(int id, String name){
         this.id = id;
-        this.balance = 1000;
+        this.name = name;
+        this.balance = 10000;
     }
 }

@@ -10,7 +10,7 @@ public class TransactRunner implements Runnable {
     List<Account> accounts;
     CountDownLatch latch;
 
-    public TransactRunner(List<Account> accounts, CountDownLatch latch) {
+    public TransactRunner( CountDownLatch latch, List<Account> accounts) {
         this.accounts = accounts;
         this.latch = latch;
     }
@@ -23,6 +23,6 @@ public class TransactRunner implements Runnable {
         BankTransaction.transact(accounts.get(accountFromNumber), accounts.get(accountToNumber), payment);
 
         latch.countDown();
-        System.out.println("count down"+latch.getCount());
+        //System.out.println("count down"+latch.getCount());
     }
 }
