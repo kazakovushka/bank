@@ -20,8 +20,8 @@ public class TransactRunner implements Runnable {
     public void run() {
         int accountFromNumber = ThreadLocalRandom.current().nextInt(0, accounts.size());
         int accountToNumber = ThreadLocalRandom.current().nextInt(0, accounts.size());
-        int payment = new Random().nextInt(10)*100;
-        BankTransaction.transactSyncronized(accounts.get(accountFromNumber), accounts.get(accountToNumber), payment);
+        int payment = new Random().nextInt(10)*10;
+        BankTransaction.transact(accounts.get(accountFromNumber), accounts.get(accountToNumber), payment);
 
         latch.countDown();
         //System.out.println("count down"+latch.getCount());

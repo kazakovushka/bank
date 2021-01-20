@@ -5,25 +5,20 @@ import model.Account;
 
 @UtilityClass
 public class BankTransaction {
+
+
     public void transact(Account from, Account to, int payment) {
-        logInitialState(from, to, payment);
-        doTransaction(from, to, payment);
-        logEndState(from, to);
-    }
-
-    public synchronized void transactSyncronized(Account from, Account to, int payment) {
-        logInitialState(from, to, payment);
-        doTransaction(from, to, payment);
-        logEndState(from, to);
-    }
-
-
-    public synchronized void checkAndTransact(Account from, Account to, int payment) {
         if (paymentIsPossible(from, payment)) {
-           transact(from, to, payment);
+            logInitialState(from, to, payment);
+            doTransaction(from, to, payment);
+            logEndState(from, to);
         } else {
             logBalanceError(from, payment);
         }
+    }
+
+    public synchronized void transactSync(Account from, Account to, int payment) {
+        transact(from, to, payment);
     }
 
     private void logInitialState(Account from, Account to, int payment) {
