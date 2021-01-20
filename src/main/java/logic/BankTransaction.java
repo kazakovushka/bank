@@ -11,8 +11,14 @@ public class BankTransaction {
         logEndState(from, to);
     }
 
+    public synchronized void transactSyncronized(Account from, Account to, int payment) {
+        logInitialState(from, to, payment);
+        doTransaction(from, to, payment);
+        logEndState(from, to);
+    }
 
-    public void checkAndTransact(Account from, Account to, int payment) {
+
+    public synchronized void checkAndTransact(Account from, Account to, int payment) {
         if (paymentIsPossible(from, payment)) {
            transact(from, to, payment);
         } else {
@@ -31,7 +37,7 @@ public class BankTransaction {
     }
 
     private void logEndState(Account from, Account to) {
-        System.out.println("Результат:" + from.getName() + ":" + from.getBalance() + ", " + to.getName() + ":" +
+        System.out.println(" Результат:" + from.getName() + ":" + from.getBalance() + ", " + to.getName() + ":" +
                 to.getBalance() + ". " + Thread.currentThread().getName());
     }
 
@@ -43,4 +49,5 @@ public class BankTransaction {
         from.setBalance(from.getBalance() - payment);
         to.setBalance(to.getBalance() + payment);
     }
+
 }

@@ -3,6 +3,7 @@ package logic;
 import model.Account;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -19,8 +20,8 @@ public class TransactRunner implements Runnable {
     public void run() {
         int accountFromNumber = ThreadLocalRandom.current().nextInt(0, accounts.size());
         int accountToNumber = ThreadLocalRandom.current().nextInt(0, accounts.size());
-        int payment = 100;
-        BankTransaction.checkAndTransact(accounts.get(accountFromNumber), accounts.get(accountToNumber), payment);
+        int payment = new Random().nextInt(10)*100;
+        BankTransaction.transactSyncronized(accounts.get(accountFromNumber), accounts.get(accountToNumber), payment);
 
         latch.countDown();
         //System.out.println("count down"+latch.getCount());
