@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class BankSimple {
     public static void main(String[] args) throws InterruptedException {
         int threadCount = 10;
-        int transactionNumber = 1000;
+        int transactionNumber = 5000;
 
         List<Account> accounts = List.of(new Account(0, "Вася"),
                 new Account(1, "Жора"), new Account(2, "Лена"));
