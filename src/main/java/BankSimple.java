@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BankSimple {
     public static void main(String[] args) throws InterruptedException {
@@ -15,7 +16,7 @@ public class BankSimple {
                 new Account(1, "Жора"), new Account(2, "Лена"));
         getSum(accounts);
 
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadCount);
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
         CountDownLatch latch = new CountDownLatch(transactionNumber);
 
         for (int i = 0; i < transactionNumber; i++) {

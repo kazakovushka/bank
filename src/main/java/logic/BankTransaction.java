@@ -11,19 +11,18 @@ public class BankTransaction {
         logEndState(from, to);
     }
 
-    private void logInitialState(Account from, Account to, int payment) {
-        System.out.print(from.getName() + ":" + from.getBalance() + "---> " + to.getName() + ":" +
-                to.getBalance() + ". Перевод: " + payment);
-    }
 
     public void checkAndTransact(Account from, Account to, int payment) {
         if (paymentIsPossible(from, payment)) {
-            logInitialState(from, to, payment);
-            doTransaction(from, to, payment);
-            logEndState(from, to);
+           transact(from, to, payment);
         } else {
             logBalanceError(from, payment);
         }
+    }
+
+    private void logInitialState(Account from, Account to, int payment) {
+        System.out.print(from.getName() + ":" + from.getBalance() + "---> " + to.getName() + ":" +
+                to.getBalance() + ". Перевод: " + payment);
     }
 
     private void logBalanceError(Account from, int payment) {
