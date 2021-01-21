@@ -14,7 +14,7 @@ public class TransactSameTimeRunner extends TransactRunner{
 
     public TransactSameTimeRunner(CountDownLatch readyToStart, CountDownLatch waitForOtherBlocker,
                                   CountDownLatch finished, List<Account> accounts) {
-        super(finished, accounts);
+        super(finished, accounts, BankTransaction.Mode.SIMPLE);
         this.waitForOtherBlocker = waitForOtherBlocker;
         this.readyToStart = readyToStart;
     }

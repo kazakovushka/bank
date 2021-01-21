@@ -10,10 +10,12 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TransactRunner implements Runnable {
     List<Account> accounts;
     CountDownLatch latch;
+    BankTransaction.Mode mode;
 
-    public TransactRunner( CountDownLatch latch, List<Account> accounts) {
+    public TransactRunner(CountDownLatch latch, List<Account> accounts, BankTransaction.Mode mode) {
         this.accounts = accounts;
         this.latch = latch;
+        this.mode = mode;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class TransactRunner implements Runnable {
         int accountFromNumber = ThreadLocalRandom.current().nextInt(0, accounts.size());
         int accountToNumber = ThreadLocalRandom.current().nextInt(0, accounts.size());
         int payment = new Random().nextInt(10)*10;
-        BankTransaction.transact(accounts.get(accountFromNumber), accounts.get(accountToNumber), payment);
+        BankTransaction.transact(accounts.get(accountFromNumber), accounts.get(accountToNumber), payment, mode);
 
         latch.countDown();
         //System.out.println("count down"+latch.getCount());

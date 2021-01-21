@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class Account {
-    int id;
-    String name;
-    int balance;
+    private int id;
+    private String name;
+    private int balance;
 
     public Account(int id, String name){
         this.id = id;
