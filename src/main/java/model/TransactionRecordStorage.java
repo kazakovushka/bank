@@ -1,24 +1,19 @@
 package model;
 
+import java.util.Comparator;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+/**
+ * хранилище хранит упорядоченные по времени записи о транзакциях
+ */
 public class TransactionRecordStorage {
-    private TransactionRecordStorage instance;
     private ConcurrentSkipListSet<TransactionRecord> storage;
 
-    private TransactionRecordStorage(){};
-
-    public TransactionRecordStorage getInstance(){
-        if (instance==null){
-            instance = new TransactionRecordStorage();
-            storage = new ConcurrentSkipListSet<>()
-        }
-        return instance;
+    public TransactionRecordStorage() {
+        storage = new ConcurrentSkipListSet<>(Comparator.comparingLong(TransactionRecord::getTimestamp));
     }
 
-    public void storeTransactionRecord(TransactionRecord record){
-
+    public void storeTransactionRecord(TransactionRecord record) {
+        storage.add(record);
     }
-
-
 }

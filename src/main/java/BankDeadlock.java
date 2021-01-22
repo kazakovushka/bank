@@ -1,7 +1,7 @@
-import logic.BankTransaction;
+import logic.BankTransactionService;
 
 public class BankDeadlock {
     public static void main(String[] args)  {
-        new Thread(new Bank(BankTransaction.Mode.SYNC_BY_OBJ)).start();
+        new Bank(BankTransactionService.Mode.SYNC_BY_OBJ).runBank();
     }
 }

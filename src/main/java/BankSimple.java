@@ -1,7 +1,7 @@
-import logic.BankTransaction;
+import logic.BankTransactionService;
 
 public class BankSimple {
-    public static void main(String[] args)  {
-       new Thread(new Bank(BankTransaction.Mode.SIMPLE)).start();
+    public static void main(String[] args) {
+       new Bank(BankTransactionService.Mode.SIMPLE).runBank();
     }
 }

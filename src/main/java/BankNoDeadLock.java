@@ -1,10 +1,7 @@
-import logic.BankTransaction;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import logic.BankTransactionService;
 
 public class BankNoDeadLock {
-    public static void main(String[] args)  {
-        Executors.newSingleThreadExecutor().submit(new Bank(BankTransaction.Mode.SYNC_BY_OBJ_NO_DEADLOCK));
+    public static void main(String[] args) {
+        new Bank(BankTransactionService.Mode.SYNC_BY_OBJ_NO_DEADLOCK).runBank();
     }
 }

@@ -1,17 +1,19 @@
-import logic.BankTransaction;
-import logic.TransactRunner;
+import logic.BankTransactionService;
 import lombok.SneakyThrows;
 import model.Account;
+import model.TransactionRecordStorage;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class Bank implements Runnable {
-    BankTransaction.Mode mode;
+public class Bank {
+    BankTransactionService.Mode mode;
 
-    public Bank(BankTransaction.Mode mode) {
+    public Bank(BankTransactionService.Mode mode) {
         this.mode = mode;
     }
 
@@ -20,9 +22,8 @@ public class Bank implements Runnable {
                 .reduce(Integer::sum).get());
     }
 
-    @SneakyThrows
-    @Override
-    public void run() {
+
+    public void runBank() {
         int threadCount = 10;
         int transactionNumber = 100000;
 
@@ -33,13 +34,30 @@ public class Bank implements Runnable {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(transactionNumber);
 
+        TransactionRecordStorage storage = new TransactionRecordStorage();
+        BankTransactionService bankTransactionService = new BankTransactionService(storage);
+
         for (int i = 0; i < transactionNumber; i++) {
-            executor.submit(new TransactRunner(latch, accounts, mode));
+            //executor.submit(new TransactRunner(latch, accounts, mode));
+            executor.execute(() -> {
+                int accountFromNumber = ThreadLocalRandom.current().nextInt(0, accounts.size());
+                int accountToNumber = ThreadLocalRandom.current().nextInt(0, accounts.size());
+                int payment = new Random().nextInt(10) * 10;
+                bankTransactionService.transact(accounts.get(accountFromNumber),
+                        accounts.get(accountToNumber), payment, mode);
+                latch.countDown();
+            });
         }
 
-        latch.await();
-        executor.shutdown();
-        accounts.forEach(System.out::println);
-        getSum(accounts);
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            accounts.forEach(System.out::println);
+            getSum(accounts);
+            executor.shutdown();
+        }
     }
 }
