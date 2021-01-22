@@ -7,6 +7,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+/**
+ * здесь запуск всех транзакций одновременно с помощью countDownLatch
+ */
 public class BankStartSameTime {
     public static void main(String[] args) throws InterruptedException {
         int threadCount = 10;

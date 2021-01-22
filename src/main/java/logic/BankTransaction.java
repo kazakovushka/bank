@@ -37,12 +37,10 @@ public class BankTransaction {
     }
 
     private void transactSync(Account from, Account to, int payment) {
-        if (paymentIsPossible(from, payment)) {
-            logInitialState(from, to, payment);
-            doTransactionSync(from, to, payment);
-            logEndState(from, to);
-        } else {
-            logBalanceError(from, payment);
+        synchronized (from) {
+            synchronized (to) {
+                transact(from, to, payment);
+            }
         }
     }
 
@@ -51,11 +49,19 @@ public class BankTransaction {
     }
 
 
-    public void transactCheckForDeadlock(Account from, Account to, int payment) {
+    private void transactCheckForDeadlock(Account from, Account to, int payment) {
         if (from.getId() <= to.getId()) {
-            transactSync(from, to, payment);
+            synchronized (from) {
+                synchronized (to) {
+                    transact(from, to, payment);
+                }
+            }
         } else {
-            transactSync(to, from, -1 * payment);
+            synchronized (to) {
+                synchronized (from) {
+                    transact(from, to, payment);
+                }
+            }
         }
     }
 
@@ -75,7 +81,7 @@ public class BankTransaction {
     }
 
     private boolean paymentIsPossible(Account from, int payment) {
-        return from.getBalance() - payment >= 0;
+        return from.getBalance() - payment >= 0 ;
     }
 
     private void doTransaction(Account from, Account to, int payment) {
@@ -83,14 +89,6 @@ public class BankTransaction {
         to.setBalance(to.getBalance() + payment);
     }
 
-    private void doTransactionSync(Account from, Account to, int payment) {
-        synchronized (from) {
-            synchronized (to) {
-                from.setBalance(from.getBalance() - payment);
-                to.setBalance(to.getBalance() + payment);
-            }
-        }
-    }
 
 
 }

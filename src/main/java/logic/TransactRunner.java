@@ -12,6 +12,7 @@ public class TransactRunner implements Runnable {
     CountDownLatch latch;
     BankTransaction.Mode mode;
 
+
     public TransactRunner(CountDownLatch latch, List<Account> accounts, BankTransaction.Mode mode) {
         this.accounts = accounts;
         this.latch = latch;

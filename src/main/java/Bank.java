@@ -30,7 +30,7 @@ public class Bank implements Runnable {
                 new Account(1, "Жора"), new Account(2, "Лена"));
         getSum(accounts);
 
-        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();//(threadCount);
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(transactionNumber);
 
         for (int i = 0; i < transactionNumber; i++) {
